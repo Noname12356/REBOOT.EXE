@@ -1,0 +1,92 @@
+[gd_scene load_steps=5 format=3 uid="uid://cvd4jqb08af6c"]
+
+[ext_resource type="Theme" uid="uid://dmha0ysm5urx7" path="res://Assets/Visual/UI/base_theme.tres" id="1_28flt"]
+[ext_resource type="Script" uid="uid://cm47jdsrt4rqd" path="res://Scripts/UI/main_menu.gd" id="1_48xlc"]
+[ext_resource type="PackedScene" uid="uid://dcxgegp0pvci5" path="res://Scenes/level.tscn" id="2_ce3w2"]
+[ext_resource type="AudioStream" uid="uid://djrkydgktdbqb" path="res://Assets/Audio/SFX/ui_blip_02.wav" id="3_1ehe0"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_48xlc")
+level = ExtResource("2_ce3w2")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.056472193, 0.1283318, 1)
+
+[node name="Name" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -224.0
+offset_top = 56.0
+offset_right = 232.0
+offset_bottom = 112.0
+grow_horizontal = 2
+theme = ExtResource("1_28flt")
+theme_override_font_sizes/font_size = 70
+text = "REBOOT.EXE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Name2" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -208.0
+offset_top = 112.0
+offset_right = 216.0
+offset_bottom = 150.0
+grow_horizontal = 2
+theme = ExtResource("1_28flt")
+theme_override_font_sizes/font_size = 32
+text = "created by @Hacker123"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 272.0
+offset_top = 152.0
+offset_right = -272.0
+offset_bottom = -104.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="ButtonPlay" type="Button" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("1_28flt")
+text = "PLAY"
+
+[node name="ButtonQuit" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_28flt")
+text = "QUIT
+"
+
+[node name="ButtonHoverSound" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("3_1ehe0")
+bus = &"Effects"
+
+[connection signal="button_down" from="VBoxContainer/ButtonPlay" to="." method="_on_button_play_button_down"]
+[connection signal="focus_entered" from="VBoxContainer/ButtonPlay" to="." method="_on_button_play_focus_entered"]
+[connection signal="button_down" from="VBoxContainer/ButtonQuit" to="." method="_on_button_quit_button_down"]
+[connection signal="focus_entered" from="VBoxContainer/ButtonQuit" to="." method="_on_button_quit_focus_entered"]
