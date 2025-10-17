@@ -1,0 +1,76 @@
+[gd_scene load_steps=4 format=3 uid="uid://dx3iqfsxsm26a"]
+
+[ext_resource type="Script" uid="uid://c38vevdvg1rq5" path="res://Scripts/UI/fail_screen.gd" id="1_oharj"]
+[ext_resource type="Theme" uid="uid://dmha0ysm5urx7" path="res://Assets/Visual/UI/base_theme.tres" id="1_rfk4e"]
+[ext_resource type="AudioStream" uid="uid://djrkydgktdbqb" path="res://Assets/Audio/SFX/ui_blip_02.wav" id="2_oharj"]
+
+[node name="FailScreen" type="Control"]
+process_mode = 2
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_oharj")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 110
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.101961, 0.109804, 0.172549, 0.752941)
+
+[node name="Name" type="Label" parent="CanvasLayer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -216.0
+offset_top = 80.0
+offset_right = 216.0
+offset_bottom = 118.0
+grow_horizontal = 2
+theme = ExtResource("1_rfk4e")
+theme_override_font_sizes/font_size = 32
+text = "YOU FAILED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 239.0
+offset_top = 152.0
+offset_right = -239.0
+offset_bottom = -104.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="ButtonRetry" type="Button" parent="CanvasLayer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme = ExtResource("1_rfk4e")
+text = "TRY AGAIN"
+
+[node name="ButtonQuit" type="Button" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_rfk4e")
+text = "QUIT
+"
+
+[node name="ButtonHoverSound" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("2_oharj")
+bus = &"Effects"
+
+[connection signal="button_down" from="CanvasLayer/VBoxContainer/ButtonRetry" to="." method="_on_button_retry_button_down"]
+[connection signal="focus_entered" from="CanvasLayer/VBoxContainer/ButtonRetry" to="." method="_on_button_retry_focus_entered"]
+[connection signal="button_down" from="CanvasLayer/VBoxContainer/ButtonQuit" to="." method="_on_button_quit_button_down"]
+[connection signal="focus_entered" from="CanvasLayer/VBoxContainer/ButtonQuit" to="." method="_on_button_quit_focus_entered"]

@@ -1,0 +1,148 @@
+[gd_scene load_steps=13 format=3 uid="uid://bta6rg6alpwct"]
+
+[ext_resource type="Texture2D" uid="uid://ch7n8bdsviq0v" path="res://Assets/Visual/Characters/enemy_ground.png" id="1_klmuj"]
+[ext_resource type="Script" uid="uid://ow780v11j4gt" path="res://Scripts/Characters/Enemy/enemy_ground.gd" id="1_s5foq"]
+[ext_resource type="Script" uid="uid://dekx8meo31r21" path="res://Scripts/Characters/Enemy/attack_box.gd" id="3_i34dp"]
+[ext_resource type="AudioStream" uid="uid://col2gbda38ce2" path="res://Assets/Audio/SFX/hit_01.wav" id="3_k1hhr"]
+
+[sub_resource type="Animation" id="Animation_s5foq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+
+[sub_resource type="Animation" id="Animation_i34dp"]
+resource_name = "death"
+length = 0.1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [6]
+}
+
+[sub_resource type="Animation" id="Animation_klmuj"]
+resource_name = "walk"
+length = 0.6
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_k1hhr"]
+_data = {
+&"RESET": SubResource("Animation_s5foq"),
+&"death": SubResource("Animation_i34dp"),
+&"walk": SubResource("Animation_klmuj")
+}
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_2nl5r"]
+random_pitch = 1.2
+streams_count = 1
+stream_0/stream = ExtResource("3_k1hhr")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s5foq"]
+size = Vector2(10, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i34dp"]
+size = Vector2(16, 6)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_s5foq"]
+radius = 4.0
+
+[node name="EnemyGround" type="CharacterBody2D" groups=["enemy"]]
+script = ExtResource("1_s5foq")
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="Sprite" type="Sprite2D" parent="Visual"]
+unique_name_in_owner = true
+position = Vector2(0, -8)
+texture = ExtResource("1_klmuj")
+hframes = 6
+vframes = 2
+frame = 1
+
+[node name="Animator" type="AnimationPlayer" parent="Visual"]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_k1hhr")
+}
+
+[node name="Audio" type="Node2D" parent="."]
+
+[node name="DeathSoundPlayer" type="AudioStreamPlayer" parent="Audio"]
+unique_name_in_owner = true
+stream = SubResource("AudioStreamRandomizer_2nl5r")
+bus = &"Effects"
+
+[node name="Hurtbox" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -4)
+shape = SubResource("RectangleShape2D_s5foq")
+
+[node name="AttackBox" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 2
+script = ExtResource("3_i34dp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackBox"]
+position = Vector2(0, -4)
+shape = SubResource("RectangleShape2D_i34dp")
+
+[node name="Raycasts" type="Node2D" parent="."]
+
+[node name="GroundRayLeft" type="RayCast2D" parent="Raycasts"]
+unique_name_in_owner = true
+position = Vector2(-8, -4)
+target_position = Vector2(0, 8)
+
+[node name="GroundRayRight" type="RayCast2D" parent="Raycasts"]
+unique_name_in_owner = true
+position = Vector2(8, -4)
+target_position = Vector2(0, 8)
+
+[node name="WallRayLeft" type="RayCast2D" parent="Raycasts"]
+unique_name_in_owner = true
+position = Vector2(0, -4)
+target_position = Vector2(-8, 0)
+
+[node name="WallRayRight" type="RayCast2D" parent="Raycasts"]
+unique_name_in_owner = true
+position = Vector2(0, -4)
+target_position = Vector2(8, 0)
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(0, -4)
+shape = SubResource("CircleShape2D_s5foq")
+
+[connection signal="area_entered" from="AttackBox" to="AttackBox" method="_on_area_entered"]

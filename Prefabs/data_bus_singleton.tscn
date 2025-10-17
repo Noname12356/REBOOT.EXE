@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c5osqwvkfgnbf"]
+
+[ext_resource type="Script" uid="uid://cbacrk8c1nvin" path="res://Scripts/data_bus_singleton.gd" id="1_g7idq"]
+
+[node name="DataBusSingleton" type="Node"]
+script = ExtResource("1_g7idq")
